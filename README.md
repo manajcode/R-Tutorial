@@ -7,12 +7,15 @@ The data I used in this workshop came from Earth Lab's Intro to R & Work with Ti
 
 The contents of this repository are as follows:
 
-1. R_workshop.Rproj: the main R project file- open first!
+1. earthanalyticswk2: Data from Earth Lab
 
-2. MNajarro_Rworkshop_code.Rmd: the R-markdown file that contains the tutorial/training code.
+2. MNajarro_R_workshop_Presentation.html: The actual slideshow presentation I presented at the start of the workshop
 
-3. MNajarro_R_workshop_Presentation.rmd: The introductory slideshow presentation file I created in R.
+3. MNajarro_R_workshop_Presentation.md: A required file to run the slideshow.
 
-4. MNajarro_R_workshop_Presentation.html: The actual slideshow presentation I presented at the start of the workshop
+4. MNajarro_R_workshop_Presentation.rpres: The introductory slideshow presentation file I created in R.
 
-5. earthanalyticswk2: Data from Earth Lab
+5. MNajarro_Rworkshop_code.Rmd: the R-markdown file that contains the tutorial/training code.
+
+6. R_workshop.Rproj: the main R project file- open first if you wish to edit any R code.
+

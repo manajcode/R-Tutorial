@@ -1,0 +1,282 @@
+---
+title: "R workshop"
+author: "Michael Najarro"
+date: "6/15/2020"
+output: html_document
+---
+
+## R markdown files vs. R script
+
+go to file -> new file -> see your options.
+
+Rscripts are ideal for creating your own functions, or when you need to automate and execute code without really studying it.
+
+R markdown files are essentially a word processor, an R script, and a fancy report generator like Latex all in one. Use R markdown files to write code, test it, take your notes on the process, and share both with someone.
+
+To write code in a rmarkdown file, press "ctrl+alt+i" or hit "insert" button up top, followed by r. write your code within the shaded region. you can run your code by pressing the green arrow in the top right corner of the chunk, or highlight the code you want with your cursor, then press "shift + enter".
+
+
+## Assignment operator
+
+"<-" is for assignment; assign a datum or data to a variable name.
+
+You can use "=" but it is not advisable; the reason is a bit pedantic; in a general sense, R has a hierarchy for interpreting the assignment operators and can sometimes get the two misused under unusual circumstances.
+
+Some examples:
+```{r}
+a <- 144
+
+x <- 55*44/a
+x
+
+y <- c("hello", "World")
+y
+```
+
+
+## Concepts
+
+### 1. Everything in R is stored as a vector
+
+meaning: 
+
+    1. Unlike othe lanaguages (C, Java, etc..) R relies heavily on the use of functions to do things for you.
+    
+    2. Functions work best on vectors of data and keep coding simple to a few lines.
+```{r}
+q <- 1+2+3+4+5+6
+q
+
+qq <- cumsum(q)
+qq
+```
+
+    3. try not to use for loops unless you have iterative changes; use apply functions.
+
+    
+### 2. Use packages 
+
+Base R can be complicated to code in and not easy for beginners. Over time, people have developed new functions that are supplemental "packages" to the base R. 
+
+Download the package "pacman."
+    
+    
+### 3. Data types 
+
+data types: integer, numeric, character, factor, time series, exposit, etc. USe the function 'class' to identify the data type of a vector. Note the patterns here in the automatic classification process of data types; what are they?
+
+```{r}
+r <- c(1, 4.55343, "dog")
+r
+class(r)
+
+rr <- c(2, 4.5, 21)
+rr
+class(rr)
+
+tt <- as.factor(c('boy', 'girl', 'baby'))
+tt
+class(t)
+
+qr <- factor(levels = c("big", "medium", "small"), c("big", "medium", "small", "grande", "tiny"))
+qr
+```
+
+
+### 4. Data exploration
+
+Try to keep track of the data types and overall- structure- of your data using function "str". Str is a base function, meaning it comes automatically with R.
+
+Note that mtcars is a built-in data set within R (package car) and you can just call it by its name to get access to it. If you want to play with its numbers, you have to store the data into a variable name first. You can also view your data using function "view", which presents your data in an excel spreadhseet-like form.
+
+```{r}
+m <- mtcars
+str(m)
+#view(m)
+```
+
+
+Glimpse performs a similar task to str, however it is a function that is supplemental, meaning you have to download a package 'tidyverse' which will allow you access to it.
+
+Once you download a package, you have to call upon it using library to start usign its functions.
+```{r, message=FALSE}
+library(tidyverse)
+glimpse(m)
+```
+
+
+If you want to pull out specific columns from the data,use dollar signs in the format below to help you extract columns: data frame $ column
+
+Or you pull multiple columns and or rows using an indexing approach, which requires using brackets in the following style:
+$$[row , column]$$
+
+```{r}
+class(m$hp)
+class(m$qsec)
+
+m[,c(1:5)]
+
+m[1,4]
+```
+
+
+### 5. Data structures
+
+Data is stored in a few data structure types, which are basal or native to R: data frames, matrices, vectors, and lists. There are also tibbles and tribbles which are like data frames, we'll discuss later.
+
+note: try not to use the letter "l" or periods or spaces in naming an object- bad things will happen.
+
+what's the difference between each? see code below:
+
+```{r}
+df1 <- data.frame(r, rr, tt)
+df1
+
+df1 <- cbind.data.frame(r, rr, tt)
+df1
+
+df1 <- cbind(r, rr, tt)
+df1
+class(df1)
+
+df1 <- rbind(r,rr,tt)
+df1
+class(df1)
+
+df2 <- matrix(c(1,2,3,4),2 ,2)
+df2
+
+df3 <- matrix(c(342,211,122,88,22,434,3,56,112), 6, 3)
+df3
+
+my_first_list <- list(df1, df2)
+my_first_list
+```
+
+
+### 6. Importing adn exploring data
+
+Here We will work with Earth Lab's week 2 data set, which can be found here: https://www.earthdatascience.org/courses/earth-analytics/time-series-data/basic-r-syntax-scientific-programming/
+
+Before you begin with pulling data from a source, it is very important to consider where you will store files and keep track of  their location. Use getwd() to identify where in your directory you are working from. there is no need to mess with your working directory if you use projects.
+
+```{r}
+getwd()
+```
+
+from a csv file there are few ways to get your csv data into R. The first way to get your data into R, is you can download your data using R:
+
+```{r message=FALSE}
+library(curl)
+
+download.file("https://ndownloader.figshare.com/files/7426738",method="libcurl", destfile = "./test/zdata.zip")
+```
+
+the second way, just download the data through your browser and save it to your project file. Unpack your zipped data to your project file.
+
+Now you need to bring the data into the environment. Here is the coding way:
+```{r}
+boulder_precip <- read.csv(file = "earthanalyticswk2/precipitation/precip-boulder-aug-oct-2013.csv", header = TRUE)
+```
+
+The non-coding way is to navigate to your csv file in the files tab to the right, Then left click a file and select "import data set".
+
+Once you've ran the code above, left click the item that appears in your environment in top right corner. Move and pause the cursor over each column title- what do you see?
+
+Alternatively, you can use str or glimpse, or any combination.
+
+
+### 7. Manipulate and subset your data
+
+Sometimes you need to manipulate your data or only collect a subset of the full data that interests you. Become familiar with piping, dplyr, and lubridate packcages.
+
+Notice the dates are factors, and there is 18 of them. This many number of levels is not helpful. This is a key issue with data loading; R likes to convert quasi-character-like things into factors when it comes to importing. So, clear your environment with the broom button, and redo your reload with a new argument stringsAsFactors = FALSE:
+
+```{r}
+boulder_precip <- read.csv(file = "earthanalyticswk2/precipitation/precip-boulder-aug-oct-2013.csv", header = TRUE, stringsAsFactors = FALSE)
+```
+
+
+Lets say I'm only interested in september precipitatinon. The problem is that the month day year are all tied together. Let's manipulate the data; see the code below.
+
+*Important:* start taking notes while we go through the code by commenting within a code chunk; add a '#'and write after it; it will turn grey or some color.
+
+```{r message=FALSE}
+# load your libraries; magrittr allows you to pipe
+# tidyverse gives you loads of modern R coding tools,
+# lubridate deals with time variables.
+# use pacman to load multiple libraries at once, and/or install missing ones.
+library(pacman)
+p_load(magrittr, tidyverse, lubridate)
+
+b <- boulder_precip
+
+b2 <- b %>%
+    separate(DATE, into = c("year", "month", "day"), sep="-") %>%
+    mutate_each(list(as.numeric), c(year, month, day)) %>%
+    filter(month == 9)
+```
+
+
+### 8. Visualize your data
+
+Now it is time to learn how to plot your data. We will use package ggplot and apply its functions to the september precipitation.
+
+The key idea with ggplot is to think in terms of adding additional aesthetics and layers: aesthetics are the unique customizations to your graph, and you add each one sequentially, in layers.
+
+We start with some basic graphs, suitable for identifying patterns:
+
+```{r}
+# september precipitation
+b2 %>%
+    ggplot(data = b2, mapping = aes(x= day, y = PRECIP)) +
+    geom_line()
+
+b2 %>%
+    ggplot(data = b2, mapping = aes(x= day, y = PRECIP)) +
+    geom_point() 
+```
+
+Now Let's go straight to a more visually appealing graph; you could include this graph in a report. What is each layer (row) doing? Run the code one line at a time to see how it changes.
+
+```{r}
+b2 %>%
+    ggplot(data = b2, mapping = aes(x= day, y = PRECIP)) +
+    geom_point() +
+    geom_line() +
+    scale_x_continuous(breaks = seq(0, 30, by = 2)) +
+    scale_y_continuous(breaks =seq(0, 10, by = 1)) +
+    labs(title = "Precipitaiton for September of 2013", subtitle = "time measured in days") +
+    theme_bw() +
+    theme(panel.grid.major = element_blank(),
+          panel.grid.minor = element_blank())
+```
+
+
+
+## *Data Visualization Exercise Challenge*
+
+Now let's plot the precipitation across bigger time scales. I am leaving the code here somewhat messy and without annotation intentionally to give you the chance to a) manipulate as you wish and b) to graph as you wish.
+
+Question: How would you adjust the code to fix the graph?
+
+```{r}
+daily_water <- read.csv(file = "./earthanalyticswk2/precipitation/805325-precip-daily-2003-2013.csv", header = TRUE, stringsAsFactors = FALSE)
+
+daily_water <- daily_water %>%
+    select(DATE, HPCP) %>%
+    mutate(Date = ymd_hm(DATE)) %>%
+    mutate(year = year(Date), month = month(Date), day = day(Date),hour= hour(Date)) 
+
+avg_HPCP <- daily_water %>%
+pull(tapply(HPCP, day, FUN=mean))
+
+days <- c(1:length(avg_HPCP))
+
+a<- cbind.data.frame(avg_HPCP, days)
+
+ggplot(data = a, mapping = aes(x=days, y = avg_HPCP))+
+    geom_point()
+```
+
+Hints: what are the "unique" values of HPCP in the dataframe daily_water? see any discrepencies in the range of values?
